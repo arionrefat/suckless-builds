@@ -103,26 +103,19 @@ static const Layout layouts[] = {
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-c", "-bw", "3", "-l" , "15", "-g", "3", NULL };
 static const char *termcmd[]  = { "st", NULL };
-static const char *filecmd[]  = { "pcmanfm", NULL };
-static const char *browser[]  = { "brave", NULL };
-static const char *lock[]  = { "slock", NULL };
-static const char *logonoff[]  = { "sh", "-c", "~/.scripts/dmlogout", NULL };
-static const char *touchpadoff[]  = { "sh", "-c", "~/.scripts/touchpadoff", NULL };
-static const char *touchpadon[]  = { "sh", "-c", "~/.scripts/touchpadon", NULL };
-static const char *screenshotgui[]  = { "flameshot", "gui", NULL };
-static const char *fullscreenshot[]  = {"scrot", "~/Pictures/screenshots/", NULL};
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_d,      spawn,          {.v = dmenucmd } },
-	{ MODKEY,                       XK_F2,      spawn,          {.v = browser } },
-	{ MODKEY,                       XK_F3,      spawn,          {.v = filecmd } },
-	{ MODKEY,                       XK_F10,      spawn,          {.v = touchpadoff } },
-	{ MODKEY,                       XK_F8,      spawn,          {.v = touchpadon } },
-	{ ControlMask|Mod1Mask,         XK_l,      spawn,          {.v = lock } },
-	{ ControlMask|Mod1Mask,         XK_k,      spawn,          {.v = logonoff } },
-	{ ControlMask|Mod1Mask,         XK_s,      spawn,          {.v = screenshotgui } },
-	{ 0,                            XK_Print,  spawn,          {.v = fullscreenshot } },
+	{ MODKEY,                       XK_z,      spawn,          SHCMD("roficlip") },
+	{ MODKEY,                       XK_F2,     spawn,          SHCMD("brave") },
+	{ MODKEY,                       XK_F3,     spawn,          SHCMD("pcmanfm") },
+	{ MODKEY,                       XK_F10,    spawn,          SHCMD("touchpadoff") },
+	{ MODKEY,                       XK_F8,     spawn,          SHCMD("touchpadon") },
+	{ ControlMask|Mod1Mask,         XK_l,      spawn,          SHCMD("slock") },
+	{ ControlMask|Mod1Mask,         XK_k,      spawn,          SHCMD("dmlogout") },
+	{ ControlMask|Mod1Mask,         XK_s,      spawn,          SHCMD("flameshot gui") },
+	{ 0,                            XK_Print,  spawn,          SHCMD("flameshot full -c -p ~/Pictures/screenshots") },
 	{ MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY|ShiftMask,             XK_j,      rotatestack,    {.i = +1 } },
@@ -201,4 +194,3 @@ static Button buttons[] = {
 	{ ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
 	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
 };
-

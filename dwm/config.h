@@ -58,6 +58,7 @@ static const Rule rules[] = {
 	{ "Sxiv",     NULL,       NULL,       0,            1,           -1 },
 	{ "Brave-browser", NULL,  NULL,       1 << 1,       0,           -1 },
 	{ "Pcmanfm",  NULL,       NULL,       1 << 4,       0,           -1 },
+	{ "mpv",      NULL,       NULL,       1 << 5,       0,           -1 },
 };
 
 /* layout(s) */
@@ -104,17 +105,19 @@ static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() 
 static const char *dmenucmd[] = { "dmenu_run", "-c", "-bw", "3", "-l" , "15", "-g", "3", NULL };
 static const char *termcmd[]  = { "st", NULL };
 
+#include "selfrestart.c"
+
 static Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_d,      spawn,          {.v = dmenucmd } },
 	{ MODKEY,                       XK_z,      spawn,          SHCMD("roficlip") },
 	{ MODKEY,                       XK_F2,     spawn,          SHCMD("brave") },
 	{ MODKEY,                       XK_F3,     spawn,          SHCMD("pcmanfm") },
-	{ MODKEY,                       XK_F10,    spawn,          SHCMD("touchpadoff") },
-	{ MODKEY,                       XK_F8,     spawn,          SHCMD("touchpadon") },
+	{ MODKEY,                       XK_F10,    spawn,          SHCMD("~/.scripts/touchpadoff") },
+	{ MODKEY,                       XK_F8,     spawn,          SHCMD("~/.scripts/touchpadon") },
 	{ Mod1Mask,                     XK_F4,     spawn,          SHCMD("pactl set-source-mute @DEFAULT_SOURCE@ toggle") },
 	{ ControlMask|Mod1Mask,         XK_l,      spawn,          SHCMD("slock") },
-	{ ControlMask|Mod1Mask,         XK_k,      spawn,          SHCMD("dmlogout") },
+	{ ControlMask|Mod1Mask,         XK_k,      spawn,          SHCMD("~/.scripts/dmlogout") },
 	{ ControlMask|Mod1Mask,         XK_s,      spawn,          SHCMD("flameshot gui") },
 	{ 0,                            XK_Print,  spawn,          SHCMD("flameshot full -c -p ~/Pictures/screenshots") },
 	{ MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
@@ -169,14 +172,15 @@ static Key keys[] = {
 	TAGKEYS(                        XK_7,                      6)
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
+    { MODKEY|ShiftMask,             XK_r,      self_restart,   {0} },
 	{ MODKEY|ShiftMask,             XK_c,      quit,           {0} },
-    { MODKEY,                       XK_s, scratchpad_show, {.i = 1} },
-    { MODKEY,                       XK_y, scratchpad_show, {.i = 2} },
-    { MODKEY,                       XK_u, scratchpad_show, {.i = 3} },
-    { MODKEY|ShiftMask,             XK_s, scratchpad_hide, {.i = 1} },
-    { MODKEY|ShiftMask,             XK_y, scratchpad_hide, {.i = 2} },
-    { MODKEY|ShiftMask,             XK_u, scratchpad_hide, {.i = 3} },
-	{ MODKEY|ShiftMask,             XK_r, scratchpad_remove,    {0} },
+    { MODKEY,                       XK_s,      scratchpad_show, {.i = 1} },
+    { MODKEY,                       XK_y,      scratchpad_show, {.i = 2} },
+    { MODKEY,                       XK_u,      scratchpad_show, {.i = 3} },
+    { MODKEY|ShiftMask,             XK_s,      scratchpad_hide, {.i = 1} },
+    { MODKEY|ShiftMask,             XK_y,      scratchpad_hide, {.i = 2} },
+    { MODKEY|ShiftMask,             XK_u,      scratchpad_hide, {.i = 3} },
+	{ MODKEY|ControlMask,           XK_r,      scratchpad_remove,    {0} },
 };
 
 /* button definitions */

@@ -10,6 +10,8 @@ static const unsigned int gappov    = 20;       /* vert outer gap between window
 static       int smartgaps          = 0;        /* 1 means no outer gap when there is only one window */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
+static const int user_bh            = 0;        /* 0 means that dwm will calculate bar height, >= 1 means dwm will user_bh as bar height */
+static const int focusonwheel       = 0;
 static const char *fonts[]          = { "CaskaydiaCove Nerd Font:size=11" };
 static const char dmenufont[]       = "Fira Code Retina:size=10";
 static const char col_gray1[]       = "#2e3440";
@@ -56,6 +58,7 @@ static const Rule rules[] = {
 	/* class      instance    title       tags mask     isfloating   monitor */
 	{ "Gimp",     NULL,       NULL,       0,            1,           -1 },
 	{ "Sxiv",     NULL,       NULL,       0,            1,           -1 },
+	{ "Blueberry.py", NULL,   NULL,       0,            1,           -1 },
 	{ "Brave-browser", NULL,  NULL,       1 << 1,       0,           -1 },
 	{ "Pcmanfm",  NULL,       NULL,       1 << 4,       0,           -1 },
 	{ "mpv",      NULL,       NULL,       1 << 5,       0,           -1 },
@@ -111,6 +114,8 @@ static Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_d,      spawn,          {.v = dmenucmd } },
 	{ MODKEY,                       XK_z,      spawn,          SHCMD("roficlip") },
+	{ MODKEY,                       XK_e,      spawn,          SHCMD("emacs") },
+	{ MODKEY,                       XK_F1,     spawn,          SHCMD("alacritty -e ranger") },
 	{ MODKEY,                       XK_F2,     spawn,          SHCMD("brave") },
 	{ MODKEY,                       XK_F3,     spawn,          SHCMD("pcmanfm") },
 	{ MODKEY,                       XK_F10,    spawn,          SHCMD("~/.scripts/touchpadoff") },
@@ -152,7 +157,7 @@ static Key keys[] = {
 	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
 	{ MODKEY|ShiftMask,             XK_f,      setlayout,      {.v = &layouts[1]} },
 	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
-	{ MODKEY|ControlMask,		XK_comma,  cyclelayout,    {.i = -1 } },
+	{ MODKEY|ControlMask,		    XK_comma,  cyclelayout,    {.i = -1 } },
 	{ MODKEY|ControlMask,           XK_period, cyclelayout,    {.i = +1 } },
 	{ MODKEY,                       XK_space,  setlayout,      {0} },
 	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },

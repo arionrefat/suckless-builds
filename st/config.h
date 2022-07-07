@@ -5,12 +5,12 @@
  *
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
-static char *font = "Hack Nerd Font Mono:pixelsize=19:antialias=true:autohint=true";
+static char *font = "FiraCode Nerd Font Mono:pixelsize=21:antialias=true:autohint=true";
 
 /* Spare fonts */
 static char *font2[] = {
-    "FiraCode Nerd Font Mono:pixelsize=11:antialias=true:autohint=true",
-    "Iosevka Nerd Font:pixelsize=12:antialias=true:autohint=true",
+    "Hack Nerd Font Mono:pixelsize=11:antialias=true:autohint=true",
+    "VictorMono Nerd Font:pixelsize=12:antialias=true:autohint=true",
 };
 
 static int borderpx = 20;
@@ -60,8 +60,8 @@ int allowwindowops = 0;
  * near minlatency, but it waits longer for slow updates to avoid partial draw.
  * low minlatency will tear/flicker more, as it can "detect" idle too early.
  */
-static double minlatency = 7;
-static double maxlatency = 30;
+static double minlatency = 6;
+static double maxlatency = 25;
 
 /*
  * Synchronized-Update timeout in ms
@@ -124,24 +124,24 @@ float alpha = 1.0;
 /* Terminal colors (16 first used in escape sequence) */
 static const char *colorname[] = {
      /* 8 normal colors */
-  [0] = "#000000", /* black   */
-  [1] = "#ff5555", /* red     */
-  [2] = "#50fa7b", /* green   */
-  [3] = "#f1fa8c", /* yellow  */
-  [4] = "#bd93f9", /* blue    */
-  [5] = "#ff79c6", /* magenta */
-  [6] = "#8be9fd", /* cyan    */
-  [7] = "#bbbbbb", /* white   */
+  [0] = "#1A1B26", /* black   */
+  [1] = "#F7768E", /* red     */
+  [2] = "#E0AF68", /* green   */
+  [3] = "#9ECE6A", /* yellow  */
+  [4] = "#7AA2F7", /* blue    */
+  [5] = "#9A7ECC", /* magenta */
+  [6] = "#4ABAAF", /* cyan    */
+  [7] = "#ACB0D0", /* white   */
 
   /* 8 bright colors */
-  [8]  = "#44475a", /* black   */
-  [9]  = "#ff5555", /* red     */
-  [10] = "#50fa7b", /* green   */
-  [11] = "#f1fa8c", /* yellow  */
-  [12] = "#bd93f9", /* blue    */
-  [13] = "#ff79c6", /* magenta */
-  [14] = "#8be9fd", /* cyan    */
-  [15] = "#ffffff", /* white   */
+  [8]  = "#4E5173", /* black   */
+  [9]  = "#E06C75", /* red     */
+  [10] = "#D19A66", /* green   */
+  [11] = "#98C379", /* yellow  */
+  [12] = "#61AFEF", /* blue    */
+  [13] = "#C678DD", /* magenta */
+  [14] = "#56B6C2", /* cyan    */
+  [15] = "#ABB2BF", /* white   */
 
   /* special colors */
   [256] = "#282a36", /* background */

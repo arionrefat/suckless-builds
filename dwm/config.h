@@ -3,22 +3,22 @@
 /* appearance */
 static const unsigned int borderpx  = 3;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
-static const unsigned int gappih    = 20;       /* horiz inner gap between windows */
-static const unsigned int gappiv    = 20;       /* vert inner gap between windows */
-static const unsigned int gappoh    = 20;       /* horiz outer gap between windows and screen edge */
-static const unsigned int gappov    = 20;       /* vert outer gap between windows and screen edge */
+static const unsigned int gappih    = 25;       /* horiz inner gap between windows */
+static const unsigned int gappiv    = 25;       /* vert inner gap between windows */
+static const unsigned int gappoh    = 25;       /* horiz outer gap between windows and screen edge */
+static const unsigned int gappov    = 25;       /* vert outer gap between windows and screen edge */
 static       int smartgaps          = 0;        /* 1 means no outer gap when there is only one window */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const int user_bh            = 0;        /* 0 means that dwm will calculate bar height, >= 1 means dwm will user_bh as bar height */
 static const int focusonwheel       = 0;
-static const char *fonts[]          = { "CaskaydiaCove Nerd Font:size=11" };
+static const char *fonts[]          = { "CaskaydiaCove Nerd Font:size=12" };
 static const char dmenufont[]       = "Fira Code Retina:size=10";
-static const char col_gray1[]       = "#2e3440";
-static const char col_gray2[]       = "#2e3440";
-static const char col_gray3[]       = "#81a1c1";
-static const char col_gray4[]       = "#e5e9f0";
-static const char col_cyan[]        = "#4c566a";
+static const char col_gray1[]       = "#81A1C1";
+static const char col_gray2[]       = "#585b70";
+static const char col_gray3[]       = "#282C34";
+static const char col_gray4[]       = "#FFFFFF";
+static const char col_cyan[]        = "#313244";
 static const unsigned int baralpha = 0xd0;
 static const unsigned int borderalpha = OPAQUE;
 static const char *colors[][3]      = {
@@ -34,14 +34,13 @@ static const unsigned int alphas[][3]      = {
 
 static const char *const autostart[] = {
 	"slstatus", NULL,
-	"optimus-manager-qt", NULL,
 	"xfce4-power-manager", NULL,
 	"/usr/lib/xfce4/notifyd/xfce4-notifyd", NULL,
 	"/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1", NULL,
-	"picom", "-b", NULL,
+	"picom", "-b", "--experimental-backend", NULL,
 	"numlockx", "on", NULL,
 	"unclutter", NULL,
-	"clipster", "-d", NULL,
+	"greenclip", "daemon", NULL,
 	"sh", "-c", "~/.fehbg", NULL,
 	NULL
 };
@@ -105,16 +104,18 @@ static const Layout layouts[] = {
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { "dmenu_run", "-c", "-bw", "3", "-l" , "15", "-g", "3", NULL };
+static const char *dmenucmd[] = { "j4-dmenu-desktop", NULL};
+// static const char *dmenucmd[] = { "dmenu_run", "-c", "-bw", "3", "-l" , "15", "-g", "3", "-p", "﩯 ",  NULL };
 static const char *termcmd[]  = { "st", NULL };
 
 #include "selfrestart.c"
+#include "X11/XF86keysym.h"
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_d,      spawn,          {.v = dmenucmd } },
-	{ MODKEY,                       XK_z,      spawn,          SHCMD("roficlip") },
-	{ MODKEY,                       XK_e,      spawn,          SHCMD("emacs") },
+	{ MODKEY,                       XK_z,      spawn,          SHCMD("greenclip print | grep . | dmenu -i -l 10 -p clipboard | xargs -r -d'\n' -I '{}' greenclip print '{}'") },
+	{ MODKEY,                       XK_e,      spawn,          SHCMD("emacsclient -c -a 'emacs'") },
 	{ MODKEY,                       XK_F1,     spawn,          SHCMD("alacritty -e ranger") },
 	{ MODKEY,                       XK_F2,     spawn,          SHCMD("brave") },
 	{ MODKEY,                       XK_F3,     spawn,          SHCMD("pcmanfm") },
@@ -122,9 +123,12 @@ static Key keys[] = {
 	{ MODKEY,                       XK_F8,     spawn,          SHCMD("~/.scripts/touchpadon") },
 	{ Mod1Mask,                     XK_F4,     spawn,          SHCMD("pactl set-source-mute @DEFAULT_SOURCE@ toggle") },
 	{ ControlMask|Mod1Mask,         XK_l,      spawn,          SHCMD("slock") },
-	{ ControlMask|Mod1Mask,         XK_k,      spawn,          SHCMD("~/.scripts/dmlogout") },
+	{ ControlMask|Mod1Mask,         XK_k,      spawn,          SHCMD("~/.scripts/power") },
 	{ ControlMask|Mod1Mask,         XK_s,      spawn,          SHCMD("flameshot gui") },
 	{ 0,                            XK_Print,  spawn,          SHCMD("flameshot full -c -p ~/Pictures/screenshots") },
+	{ 0,                            XF86XK_AudioRaiseVolume,  spawn,          SHCMD("pactl set-sink-volume 0 +5%") },
+	{ 0,                            XF86XK_AudioLowerVolume,  spawn,          SHCMD("pactl set-sink-volume 0 -5%") },
+	{ 0,                            XF86XK_AudioMute,         spawn,          SHCMD("pactl set-sink-mute 0 toggle") },
 	{ MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY|ShiftMask,             XK_j,      rotatestack,    {.i = +1 } },
@@ -192,8 +196,8 @@ static Key keys[] = {
 /* click can be ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle, ClkClientWin, or ClkRootWin */
 static Button buttons[] = {
 	/* click                event mask      button          function        argument */
-	{ ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
-	{ ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
+	{ ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
+	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
 	{ ClkWinTitle,          0,              Button2,        zoom,           {0} },
 	{ ClkStatusText,        0,              Button2,        spawn,          {.v = termcmd } },
 	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
@@ -204,3 +208,4 @@ static Button buttons[] = {
 	{ ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
 	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
 };
+
